@@ -1,0 +1,58 @@
+<div class="container">    
+  <div class="d-flex justify-content-center">
+    <div class="col-sm-4 col-lg-3" >
+        <input class="mt-3 search" [(ngModel)]="searchPokemon.nome" placeholder="Digite o nome de um pokemon" type="text">
+    </div>  
+  </div>
+  <div class="d-flex justify-content-center" *ngIf="!pokemons">
+      <div class="spinner-border mb-4 mt-4" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+  <div class="row">
+    <div *ngFor="let pkm of pokemons | filterBy: searchPokemon " class="col-lg-3">
+      <div class="card m-auto shadow" (click)="openModal(template,pkm.numeroDex)">
+        <h4 class="card-title text-center mt-2">#{{pkm.numeroDex}} {{pkm.nome}}</h4>
+        <img class="card-img"  [useSrcset]="true" [defaultImage]='"../../../assets/icons/icon-128x128.png"' [lazyLoad]="pkm.img" [offset]="offset"  alt="">
+      </div>
+      <ng-template #template>        
+        <button type="button" class="close ml-auto" aria-label="Close" (click)="modalRef.hide()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <div class="d-flex justify-content-center" *ngIf="spin">
+            <div class="spinner-border mb-4" role="status">
+              <span class="sr-only">Loading...</span>
+            </div>
+          </div>
+        <div class="modal-body" *ngIf="!spin">
+          <div class="container">
+            <div class="card m-auto border-0">
+              <img class="card-img" src="{{pkm.img}}" alt="">
+              <div class="card-footer d-flex justify-content-center bg-transparent border-0" *ngIf="pokemon?.tipo.length > 1">
+                <button type="button" [ngClass]="pokemon?.tipo[0]" class="btn btn-sm mr-2">
+                  {{pokemon?.tipo[0]}}
+                </button>
+                <button type="button" [ngClass]="pokemon?.tipo[1]" class="btn btn-sm">
+                  {{pokemon?.tipo[1]}}
+                </button>
+              </div>
+              <div class="card-footer d-flex justify-content-center bg-transparent border-0" *ngIf="pokemon?.tipo.length === 1">
+                <button type="button" [ngClass]="pokemon?.tipo[0]" class="btn btn-sm">
+                  {{ pokemon?.tipo[0]}}
+                </button>
+              </div>
+            </div>
+            <h4 class="card-title text-center mt-2">Power</h4>
+            <div class="d-flex justify-content-center p-2">
+              <app-pokemons-power [single]="pokemon?.status"></app-pokemons-power>
+            </div>
+            <h4 class="card-title text-center mt-2">Sprits old-games</h4>
+            <div class="d-flex justify-content-center">
+              <app-pokemons-sprits [sprites]="pokemon?.sprites"></app-pokemons-sprits>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>

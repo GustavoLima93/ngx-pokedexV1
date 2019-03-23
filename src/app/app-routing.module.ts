@@ -1,7 +1,16 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-const routes: Routes = [];
+import { PokemonsRoutes } from './pokemons/pokemons-routing.module';
+
+const routes: Routes = [
+  {
+    path: '', 
+    redirectTo: 'pokemons', 
+    pathMatch: 'full'
+  },
+  ...PokemonsRoutes
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
